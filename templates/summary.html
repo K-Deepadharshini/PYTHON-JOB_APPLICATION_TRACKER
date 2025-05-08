@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Summary - Job Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e0ecff, #f7faff);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .header {
+      background-color: #4a90e2;
+      color: white;
+      padding: 25px;
+      text-align: center;
+      border-bottom: 6px solid #357ABD;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px 25px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .card i {
+      font-size: 28px;
+      color: #4a90e2;
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      margin: 5px 0;
+      font-size: 1.8rem;
+      color: #222;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #666;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .back-link a {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: white;
+      color: #4a90e2;
+      border: 2px solid #4a90e2;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .back-link a:hover {
+      background-color: #4a90e2;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1><i class="fas fa-chart-pie"></i> Application Summary</h1>
+  </div>
+
+  <div class="container">
+    <div class="grid">
+      <div class="card">
+        <i class="fas fa-briefcase"></i>
+        <h3>{{ total_applications }}</h3>
+        <p>Total Applications</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-calendar-check"></i>
+        <h3>{{ total_interviews }}</h3>
+        <p>Interviews Scheduled</p>
+      </div>
+      {% for status, count in status_counts %}
+      <div class="card">
+        <i class="fas fa-info-circle"></i>
+        <h3>{{ count }}</h3>
+        <p>{{ status }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="back-link">
+      <a href="/"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    </div>
+  </div>
+
+</body>
+</html>

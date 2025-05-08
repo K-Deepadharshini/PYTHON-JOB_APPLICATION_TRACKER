@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About - Job Application Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #e0ecff, #f7faff);
+      color: #333;
+    }
+
+    .header {
+      background-color: #4a90e2;
+      color: white;
+      padding: 25px;
+      text-align: center;
+      border-bottom: 4px solid #357ABD;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .container h2 {
+      text-align: center;
+      color: #4a90e2;
+      margin-bottom: 20px;
+    }
+
+    .container p, .container ul {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .container ul {
+      padding-left: 20px;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .back-link a {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #ffffff;
+      color: #4a90e2;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
+      border: 2px solid #4a90e2;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .back-link a:hover {
+      background-color: #4a90e2;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1><i class="fas fa-info-circle"></i> About This Project</h1>
+  </div>
+
+  <div class="container">
+    <h2>Welcome to the Job Application Tracker</h2>
+    <p>This platform is designed to help you efficiently manage your job search journey.</p>
+
+    <p><strong>Key Features:</strong></p>
+    <ul>
+      <li>➕ Add and track job applications</li>
+      <li>✏️ Update and delete applications as needed</li>
+      <li>📅 Schedule interviews and monitor progress</li>
+      <li>🔍 Search and filter job applications quickly</li>
+    </ul>
+
+    <p><strong>Technologies Used:</strong> Flask (Python), MySQL, HTML, CSS, and JavaScript.</p>
+    <p><strong>Developed by:</strong> Anushri T and Deepadharshini K</p>
+
+    <div class="back-link">
+      <a href="/"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    </div>
+  </div>
+
+</body>
+</html>

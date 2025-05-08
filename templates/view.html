@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>View Applications - Job Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5faff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .header {
+      background-color: #4a90e2;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 4px solid #357ABD;
+    }
+
+    .search-section {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      margin-top: 25px;
+      flex-wrap: wrap;
+    }
+
+    .search-item label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .search-input-wrapper i {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+      color: #888;
+    }
+
+    .search-input-wrapper input {
+      padding: 12px 12px 12px 36px;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .search-item button {
+      padding: 12px 24px;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .search-item button:hover {
+      background-color: #357abd;
+    }
+
+    .table-container {
+      margin-top: 30px;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0;
+    }
+
+    th, td {
+      padding: 14px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 16px;
+    }
+
+    th {
+      background-color: #4a90e2;
+      color: white;
+      font-weight: bold;
+    }
+
+    td {
+      background-color: #f9f9f9;
+    }
+
+    tr:nth-child(odd) td {
+      background-color: #f1f1f1;
+    }
+
+    tr:hover td {
+      background-color: #e0f7fa;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .back-link a {
+      color: #4a90e2;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .no-results {
+      color: #c00;
+      font-weight: bold;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .table-container h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>View Applications</h1>
+  </div>
+
+  <div class="container">
+    <div class="search-section">
+      <div class="search-item">
+        <label for="company">Search by Company</label>
+        <div class="search-input-wrapper">
+          <i class="fas fa-search"></i>
+          <input type="text" id="company" placeholder="Enter company name" />
+        </div>
+      </div>
+      <div class="search-item">
+        <button onclick="searchApplications()">Search</button>
+      </div>
+    </div>
+
+    <div id="no-results" class="no-results" style="display:none;">No matching applications found.</div>
+
+    <div class="table-container" id="results-table" style="display:none;">
+      <h2>Applications</h2>
+      <table id="applications-table">
+        <thead>
+          <tr>
+            <th>Application ID</th>
+            <th>Company</th>
+            <th>Position</th>
+            <th>Application Date</th>
+            <th>Status</th>
+            <th>Interview Date</th>
+            <th>Interview Time</th>
+            <th>Interview Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Filled by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="back-link">
+      <a href="/">Back to Dashboard</a>
+    </div>
+  </div>
+
+  <script>
+    let allApplications = [];
+
+    function renderApplications(data) {
+      const table = document.getElementById("applications-table").getElementsByTagName("tbody")[0];
+      const resultsTable = document.getElementById("results-table");
+      const noResults = document.getElementById("no-results");
+    
+      table.innerHTML = "";
+    
+      if (data.length === 0) {
+        resultsTable.style.display = "none";
+        noResults.style.display = "block";
+        return;
+      }
+    
+      noResults.style.display = "none";
+      resultsTable.style.display = "block";
+    
+      data.forEach(app => {
+        const row = table.insertRow();
+        row.innerHTML = `
+          <td>${app.application_id}</td>
+          <td>${app.company_name}</td>
+          <td>${app.job_position}</td>
+          <td>${app.application_date}</td>
+          <td>${app.status}</td>
+          <td>${app.interview_date || 'N/A'}</td>
+          <td>${app.interview_time || 'N/A'}</td>
+          <td>${app.interview_location || 'N/A'}</td>`;
+      });
+    }
+    
+    function searchApplications() {
+      const company = document.getElementById("company").value.trim().toLowerCase();
+      const filtered = allApplications.filter(app =>
+        app.company_name.toLowerCase().includes(company)
+      );
+      renderApplications(filtered);
+    }
+
+    window.onload = () => {
+      fetch('/view?json=1')
+        .then(res => res.json())
+        .then(data => {
+          allApplications = data;
+          renderApplications(data);
+        })
+        .catch(err => {
+          alert("Error loading applications.");
+          console.error("Fetch error:", err);
+        });
+    };
+  </script>
+</body>
+</html>

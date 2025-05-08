@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add New Job Application</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e0ecff, #f7faff);
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      background-color: #4a90e2;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 4px solid #357ABD;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .form-container {
+      background-color: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 100%;
+      max-width: 600px;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #555;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #4a90e2;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background-color: #4a90e2;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .btn-submit:hover {
+      background-color: #357ABD;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .back-link a {
+      color: #4a90e2;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Alert Styles */
+    .alert {
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      display: none;
+    }
+
+    .alert-success {
+      color: #155724;
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+    }
+
+    .alert-error {
+      color: #721c24;
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1><i class="fas fa-briefcase"></i> Add New Job Application</h1>
+  </div>
+
+  <div class="container">
+    <div class="form-container">
+      <h2>Enter Application Details</h2>
+
+      <!-- Alert Messages -->
+      <div id="alert-success" class="alert alert-success">
+        Form submitted successfully!
+      </div>
+      <div id="alert-error" class="alert alert-error">
+        An error occurred while submitting the form.
+      </div>
+
+      <form id="jobApplicationForm" action="/add" method="POST">
+        <div class="form-group">
+          <label>Company Name:</label>
+          <input type="text" name="company_name" required>
+        </div>
+
+        <div class="form-group">
+          <label>Company Location:</label>
+          <input type="text" name="company_location" required>
+        </div>
+
+        <div class="form-group">
+          <label>Company Email:</label>
+          <input type="email" name="company_email" required>
+        </div>
+
+        <div class="form-group">
+          <label>Company Phone No:</label>
+          <input type="text" name="company_pno" required>
+        </div>
+
+        <div class="form-group">
+          <label>Job Position:</label>
+          <input type="text" name="job_position" required>
+        </div>
+
+        <div class="form-group">
+          <label>Status:</label>
+          <select name="status" required>
+            <option value="Applied">Applied</option>
+            <option value="Awaiting Response">Awaiting Response</option>
+            <option value="Interview Scheduled">Interview Scheduled</option>
+            <option value="Offer Received">Offer Received</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Hired">Hired</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Application Date:</label>
+          <input type="date" name="application_date" required>
+        </div>
+
+        <div class="form-group">
+          <label>Job Description:</label>
+          <textarea name="job_description" rows="5" required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Submit</button>
+      </form>
+
+      <div class="back-link">
+        <a href="/">Back to Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('jobApplicationForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      // Simulate form submission using Fetch API
+      fetch(this.action, {
+        method: this.method,
+        body: new FormData(this)
+      })
+      .then(response => {
+        if (response.ok) {
+          document.getElementById('alert-success').style.display = 'block';
+          document.getElementById('alert-error').style.display = 'none';
+          this.reset(); // Reset form fields
+        } else {
+          throw new Error('Network response was not ok.');
+        }
+      })
+      .catch(error => {
+        document.getElementById('alert-success').style.display = 'none';
+        document.getElementById('alert-error').style.display = 'block';
+        console.error('There was a problem with the fetch operation:', error);
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Calendar</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0ecff, #f7faff);
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      background-color: #4a90e2;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .header h1 {
+      margin: 0;
+    }
+
+    .back-btn {
+      position: absolute;
+      left: 20px;
+      top: 22px;
+      background: white;
+      color: #4a90e2;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .calendar-container {
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .controls {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .controls select {
+      padding: 8px 12px;
+      margin: 0 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background-color: #4a90e2;
+      color: white;
+      padding: 10px;
+    }
+
+    td {
+      height: 100px;
+      vertical-align: top;
+      border: 1px solid #ccc;
+      padding: 5px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .note {
+      background-color: #ffeb3b;
+      padding: 6px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    .delete-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 2px 6px;
+      font-size: 12px;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .modal input {
+      width: 90%;
+      padding: 8px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .modal button {
+      margin-top: 10px;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .modal .save-btn {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .modal .cancel-btn {
+      background-color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <button class="back-btn" onclick="window.location.href='/'">← Back</button>
+    <h1><i class="fas fa-calendar-alt"></i> Job Calendar</h1>
+  </div>
+
+  <div class="calendar-container">
+    <div class="controls">
+      <select id="month" onchange="renderCalendar()"></select>
+      <select id="year" onchange="renderCalendar()"></select>
+    </div>
+
+    <table id="calendar"></table>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="noteModal">
+    <div class="modal-content">
+      <h3>Add Note</h3>
+      <input type="text" id="noteText" placeholder="Job / Task...">
+      <br/>
+      <button class="save-btn" onclick="saveNote()">Save</button>
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    const calendar = document.getElementById("calendar");
+    const noteModal = document.getElementById("noteModal");
+    const noteText = document.getElementById("noteText");
+    let selectedDate = "";
+  
+    function populateYear() {
+      const yearSelect = document.getElementById("year");
+      const currentYear = new Date().getFullYear();
+      for (let i = currentYear - 5; i <= currentYear + 5; i++) {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.text = i;
+        if (i === 2025) opt.selected = true;
+        yearSelect.appendChild(opt);
+      }
+    }
+  
+    function populateMonth() {
+      const monthSelect = document.getElementById("month");
+      const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      months.forEach((month, index) => {
+        const opt = document.createElement("option");
+        opt.value = index;
+        opt.text = month;
+        if (index === 4) opt.selected = true; // Set default month as May
+        monthSelect.appendChild(opt);
+      });
+    }
+  
+    // Function to get the saved notes from localStorage
+    function getNotes() {
+      return JSON.parse(localStorage.getItem("calendarNotes") || "{}");
+    }
+  
+    // Function to save a note
+    function saveNote() {
+      const notes = getNotes();
+      if (noteText.value.trim()) {
+        notes[selectedDate] = noteText.value.trim();
+        localStorage.setItem("calendarNotes", JSON.stringify(notes));
+        closeModal();
+        renderCalendar();
+      }
+    }
+  
+    // Function to delete a note
+    function deleteNote(date) {
+      const notes = getNotes();
+      delete notes[date];
+      localStorage.setItem("calendarNotes", JSON.stringify(notes));
+      renderCalendar();
+    }
+  
+    // Function to open the modal for adding a note
+    function openModal(date) {
+      selectedDate = date;
+      noteText.value = getNotes()[date] || "";
+      noteModal.style.display = "flex";
+    }
+  
+    // Function to close the modal
+    function closeModal() {
+      noteModal.style.display = "none";
+      selectedDate = "";
+    }
+  
+    // Function to render the calendar and display notes
+    function renderCalendar() {
+      const month = parseInt(document.getElementById("month").value);
+      const year = parseInt(document.getElementById("year").value);
+      const notes = getNotes();
+  
+      calendar.innerHTML = "";
+  
+      const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const headerRow = document.createElement("tr");
+      daysOfWeek.forEach(day => {
+        const th = document.createElement("th");
+        th.textContent = day;
+        headerRow.appendChild(th);
+      });
+      calendar.appendChild(headerRow);
+  
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      let date = 1;
+  
+      for (let i = 0; i < 6; i++) {
+        const row = document.createElement("tr");
+  
+        for (let j = 0; j < 7; j++) {
+          const cell = document.createElement("td");
+  
+          if (i === 0 && j < firstDay) {
+            cell.textContent = "";
+          } else if (date > daysInMonth) {
+            break;
+          } else {
+            const fullDate = `${year}-${String(month + 1).padStart(2, "0")}-${String(date).padStart(2, "0")}`;
+            cell.innerHTML = `<strong>${date}</strong>`;
+            cell.onclick = () => openModal(fullDate);
+  
+            if (notes[fullDate]) {
+              const noteDiv = document.createElement("div");
+              noteDiv.className = "note";
+              noteDiv.innerHTML = `
+                ${notes[fullDate]}<br>
+                <button class="delete-btn" onclick="event.stopPropagation(); deleteNote('${fullDate}')">Delete</button>
+              `;
+              cell.appendChild(noteDiv);
+            }
+            date++;
+          }
+  
+          row.appendChild(cell);
+        }
+  
+        calendar.appendChild(row);
+      }
+    }
+  
+    // Initialization
+    populateYear();
+    populateMonth();
+    renderCalendar();
+  </script>
+  
+
+</body>
+</html>

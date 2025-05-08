@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interview Tracker - Job Application Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e0ecff, #f7faff);
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      background-color: #4a90e2;
+      color: white;
+      padding: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+      text-align: center;
+    }
+
+    .back-link {
+      position: absolute;
+      left: 20px;
+      top: 25px;
+    }
+
+    .back-link a {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #ffffff;
+      color: #4a90e2;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
+      border: 2px solid #4a90e2;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .back-link a:hover {
+      background-color: #4a90e2;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px 60px;
+    }
+
+    .interview-section {
+      background-color: white;
+      border-radius: 16px;
+      padding: 30px;
+      margin-top: 30px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .interview-section h2 {
+      color: #333;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #444;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      border-color: #4a90e2;
+      outline: none;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 26px;
+      background-color: #4a90e2;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background-color: #357ABD;
+    }
+
+    .interview-item {
+      border-bottom: 1px solid #e0e0e0;
+      padding: 20px 0;
+      transition: background 0.2s;
+    }
+
+    .interview-item:last-child {
+      border-bottom: none;
+    }
+
+    .interview-item:hover {
+      background-color: #f9f9f9;
+      border-radius: 10px;
+    }
+
+    .interview-item strong {
+      font-size: 17px;
+      color: #222;
+      display: block;
+    }
+
+    .interview-item small {
+      display: block;
+      color: #555;
+      margin-top: 4px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .btn {
+        font-size: 14px;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      input[type="time"] {
+        font-size: 15px;
+      }
+
+      .interview-section {
+        padding: 20px;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .back-link {
+        position: relative;
+        left: 0;
+        top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1><i class="fas fa-calendar-alt"></i> Interview Tracker</h1>
+    <div class="back-link">
+      <a href="/"><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="interview-section">
+      <h2>📅 Schedule an Interview</h2>
+      <form action="/interviews" method="POST">
+        <div class="form-group">
+          <label for="company">Company Name</label>
+          <input type="text" id="company" name="company" placeholder="Enter company name" required>
+        </div>
+        <div class="form-group">
+          <label for="interview-date">Interview Date</label>
+          <input type="date" id="interview-date" name="interview-date" required>
+        </div>
+        <div class="form-group">
+          <label for="interview-time">Interview Time</label>
+          <input type="time" id="interview-time" name="interview-time" required>
+        </div>
+        <div class="form-group">
+          <label for="interview-location">Interview Location</label>
+          <input type="text" id="interview-location" name="interview-location" placeholder="Enter interview location" required>
+        </div>
+        <button type="submit" class="btn"><i class="fas fa-plus"></i> Schedule Interview</button>
+      </form>
+    </div>
+
+    <div class="interview-section">
+      <h2>🗓 Upcoming Interviews</h2>
+      <div id="interview-list"></div>
+    </div>
+
+  </div>
+
+  <script>
+    fetch('/view?json=1')
+      .then(res => res.json())
+      .then(data => {
+        const list = document.getElementById("interview-list");
+        const interviews = data.filter(app => app.interview_date);
+
+        if (interviews.length === 0) {
+          list.innerHTML = "<p>No upcoming interviews scheduled.</p>";
+          return;
+        }
+
+        interviews.forEach(app => {
+          const div = document.createElement("div");
+          div.classList.add("interview-item");
+          div.innerHTML = `
+            <strong>Company: ${app.company_name}</strong>
+            <small><i class="fas fa-calendar"></i> ${app.interview_date}</small>
+            <small><i class="fas fa-clock"></i> ${app.interview_time}</small>
+            <small><i class="fas fa-map-marker-alt"></i> ${app.interview_location}</small>`;
+          list.appendChild(div);
+        });
+      });
+  </script>
+
+</body>
+</html>

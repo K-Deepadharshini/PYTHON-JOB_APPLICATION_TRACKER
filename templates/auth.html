@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login / Sign Up</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom, #4a90e2, #003366);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+    }
+
+    .container h2 {
+      color: #4a90e2;
+      margin-bottom: 24px;
+      font-weight: 600;
+    }
+
+    .toggle-buttons {
+      display: flex;
+      border-radius: 30px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      background: #e0e0e0;
+    }
+
+    .toggle-buttons button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .toggle-buttons .active {
+      background-color: #4a90e2;
+      color: white;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    button[type="submit"] {
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #357ab8;
+    }
+
+    a {
+      text-align: right;
+      font-size: 13px;
+      color: #4a90e2;
+      text-decoration: none;
+      margin-top: 4px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Welcome</h2>
+
+    <div class="toggle-buttons">
+      <button id="loginTab" class="active" onclick="switchForm('login')">LOGIN</button>
+      <button id="signupTab" onclick="switchForm('signup')">SIGN UP</button>
+    </div>
+
+    <div id="loginForm">
+      <form action="/login" method="POST">
+        <input type="text" name="username" placeholder="Username" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <a href="#">Forgot password?</a>
+        <button type="submit">LOGIN</button>
+      </form>
+    </div>
+
+    <div id="signupForm" class="hidden">
+      <form action="/signup" method="POST">
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="text" name="username" placeholder="Username" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <input type="password" placeholder="Confirm Password" required />
+        <button type="submit">SIGN UP</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function switchForm(form) {
+      const loginTab = document.getElementById('loginTab');
+      const signupTab = document.getElementById('signupTab');
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+
+      if (form === 'login') {
+        loginTab.classList.add('active');
+        signupTab.classList.remove('active');
+        loginForm.classList.remove('hidden');
+        signupForm.classList.add('hidden');
+      } else {
+        signupTab.classList.add('active');
+        loginTab.classList.remove('active');
+        signupForm.classList.remove('hidden');
+        loginForm.classList.add('hidden');
+      }
+    }
+  </script>
+
+</body>
+</html>
